@@ -10,15 +10,43 @@
   <div class="w-full max-w-md p-6 bg-white rounded-lg shadow">
     <h1 class="text-2xl font-bold mb-4">Chatlogix</h1>
     <p class="text-sm text-gray-600 mb-4">Upload a WhatsApp chat .txt file to analyze. Mobile-first UI (Tailwind).</p>
-    <form action="/analyze" method="post" enctype="multipart/form-data" class="space-y-4">
+    <form id="upload-form" action="/analyze" method="post" enctype="multipart/form-data" class="space-y-4">
       <label class="block">
         <span class="sr-only">Chat file</span>
-        <input type="file" name="file" accept=".txt" class="block w-full text-sm text-gray-700" required />
+        <input id="chat-file" type="file" name="file" accept=".txt" class="block w-full text-sm text-gray-700" required />
       </label>
-      <button type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md">Upload & Analyze</button>
+      <button id="upload-btn" type="submit" class="w-full py-2 px-4 bg-indigo-600 text-white rounded-md">Upload & Analyze</button>
     </form>
+    <p id="upload-status" class="text-sm text-gray-600 mt-2"></p>
     <hr class="my-4" />
     <p class="text-xs text-gray-500">Powered by the WhatsApp Chat Analyzer API — no local DB; session-only storage.</p>
   </div>
+  <script>
+    // Optional AJAX upload to use internal API directly
+    const form = document.getElementById('upload-form');
+    const fileInput = document.getElementById('chat-file');
+    const statusEl = document.getElementById('upload-status');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!fileInput.files.length) return;
+      const f = fileInput.files[0];
+      const fd = new FormData();
+      fd.append('file', f, f.name);
+      statusEl.textContent = 'Uploading...';
+      try {
+        const res = await fetch('/api/upload', {method: 'POST', body: fd});
+        const json = await res.json();
+        if (!res.ok) {
+          statusEl.textContent = 'Upload failed: ' + (json.detail || json.error || res.statusText);
+          return;
+        }
+        statusEl.textContent = 'Upload complete — loading dashboard...';
+        // redirect to dashboard (session now stored)
+        window.location.href = '/dashboard';
+      } catch (err) {
+        statusEl.textContent = 'Upload error: ' + err.message;
+      }
+    });
+  </script>
 </body>
 </html>
