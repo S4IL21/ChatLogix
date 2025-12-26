@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chatlogix — Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="p-4 max-w-3xl mx-auto">
+    <header class="flex items-center justify-between mb-4">
+      <h1 class="text-xl font-bold">Chatlogix Dashboard</h1>
+      <a href="/" class="text-sm text-indigo-600">Upload another</a>
+    </header>
+
+    <section class="mb-4">
+      <label class="block text-sm font-medium text-gray-700">Select Member</label>
+      <select id="member-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></select>
+    </section>
+
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+      <div class="col-span-1 p-4 bg-white rounded shadow" id="card-messages">Total Messages: —</div>
+      <div class="col-span-1 p-4 bg-white rounded shadow" id="card-words">Total Words: —</div>
+      <div class="col-span-1 p-4 bg-white rounded shadow" id="card-media">Media Shared: —</div>
+    </section>
+
+    <section class="mb-6 p-4 bg-white rounded shadow">
+      <h2 class="font-semibold mb-2">Activity Over Time</h2>
+      <canvas id="activity-chart" height="120"></canvas>
+    </section>
+
+    <section class="mb-6 p-4 bg-white rounded shadow">
+      <h2 class="font-semibold mb-2">Top Active Members</h2>
+      <canvas id="top-members-chart" height="120"></canvas>
+    </section>
+
+  </div>
+
+  <script src="/static/js/main.js"></script>
+</body>
+</html>
